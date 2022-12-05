@@ -17,8 +17,26 @@
   <name>Job4j Cars</name>
 
   <properties>
-    <java.version>18</java.version>
+    <java.version>17</java.version>
   </properties>
+
+  <profiles>
+    <profile>
+      <id>test</id>
+      <properties>
+        <liquibase.config>db/liquibase.test.properties</liquibase.config>
+      </properties>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+    </profile>
+    <profile>
+      <id>production</id>
+      <properties>
+        <liquibase.config>db/liquibase.properties</liquibase.config>
+      </properties>
+    </profile>
+  </profiles>
 
   <dependencies>
 
@@ -126,7 +144,7 @@
       <plugin>
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
-        <version>0.8.7</version>
+        <version>0.8.8</version>
         <executions>
           <execution>
             <goals>
@@ -148,8 +166,17 @@
         <artifactId>liquibase-maven-plugin</artifactId>
         <version>4.15.0</version>
         <configuration>
-          <propertyFile>db/liquibase.properties</propertyFile>
+          <propertyFile>${liquibase.config}</propertyFile>
         </configuration>
+        <executions>
+          <execution>
+            <phase>process-resources</phase>
+            <goals>
+              <goal>clearCheckSums</goal>
+              <goal>update</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
 
     </plugins>
