@@ -44,6 +44,8 @@ public class UserRepository {
             session.getTransaction().commit();
         } catch (Exception e) {
             session.getTransaction().rollback();
+        } finally {
+            session.close();
         }
         return user;
     }
@@ -64,6 +66,8 @@ public class UserRepository {
             session.getTransaction().commit();
         } catch (Exception e) {
             session.getTransaction().rollback();
+        } finally {
+            session.close();
         }
 
     }
@@ -82,6 +86,8 @@ public class UserRepository {
             session.getTransaction().commit();
         } catch (Exception e) {
             session.getTransaction().rollback();
+        } finally {
+            session.close();
         }
     }
 
@@ -94,6 +100,8 @@ public class UserRepository {
         session.beginTransaction();
         Query<User> query = session.createQuery(FIND_ALL_ORDER_BY);
         List<User> result = query.list();
+        session.getTransaction().commit();
+        session.close();
         return result;
     }
 
