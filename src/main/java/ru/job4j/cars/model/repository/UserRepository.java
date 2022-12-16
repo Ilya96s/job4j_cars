@@ -1,11 +1,9 @@
 package ru.job4j.cars.model.repository;
 
 import lombok.AllArgsConstructor;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.query.Query;
 import ru.job4j.cars.model.User;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -17,9 +15,7 @@ import java.util.Optional;
 @AllArgsConstructor
 public class UserRepository {
 
-    private static final String UPDATE = "UPDATE User SET login = :login, password = :password WHERE id = :id";
-
-    private static final String DELETE = "DELETE User WHERE id = :id";
+    private static final String DELETE = "DELETE From User WHERE id = :id";
 
     private static final String FIND_ALL_ORDER_BY = "From User as user ORDER BY user.id";
 
@@ -29,7 +25,7 @@ public class UserRepository {
 
     private static final String FIND_BY_LOGIN = "From User WHERE login = :login";
 
-    private final SessionFactory sf;
+    private final CrudRepository crudRepository;
 
     /**
      * Сохранить в базе.
@@ -37,16 +33,7 @@ public class UserRepository {
      * @return пользователь с id.
      */
     public User create(User user) {
-        Session session = sf.openSession();
-        try {
-            session.beginTransaction();
-            session.save(user);
-            session.getTransaction().commit();
-        } catch (Exception e) {
-            session.getTransaction().rollback();
-        } finally {
-            session.close();
-        }
+        crudRepository.run(session -> session.persist(user));
         return user;
     }
 
@@ -55,21 +42,7 @@ public class UserRepository {
      * @param user пользователь.
      */
     public void update(User user) {
-        Session session = sf.openSession();
-        try {
-            session.beginTransaction();
-            session.createQuery(UPDATE)
-                    .setParameter("login", user.getLogin())
-                    .setParameter("password", user.getPassword())
-                    .setParameter("id", user.getId())
-                    .executeUpdate();
-            session.getTransaction().commit();
-        } catch (Exception e) {
-            session.getTransaction().rollback();
-        } finally {
-            session.close();
-        }
-
+        crudRepository.run(session -> session.merge(user));
     }
 
     /**
@@ -77,18 +50,7 @@ public class UserRepository {
      * @param userId id.
      */
     public void delete(int userId) {
-        Session session = sf.openSession();
-        try {
-            session.beginTransaction();
-            session.createQuery(DELETE)
-                    .setParameter("id", userId)
-                    .executeUpdate();
-            session.getTransaction().commit();
-        } catch (Exception e) {
-            session.getTransaction().rollback();
-        } finally {
-            session.close();
-        }
+        crudRepository.run(DELETE, Map.of("id", userId));
     }
 
     /**
@@ -96,13 +58,7 @@ public class UserRepository {
      * @return список пользователй.
      */
     public List<User> findAllOrderById() {
-        Session session = sf.openSession();
-        session.beginTransaction();
-        Query<User> query = session.createQuery(FIND_ALL_ORDER_BY);
-        List<User> result = query.list();
-        session.getTransaction().commit();
-        session.close();
-        return result;
+        return crudRepository.query(FIND_ALL_ORDER_BY, User.class);
     }
 
     /**
@@ -111,13 +67,9 @@ public class UserRepository {
      * @return Optional или пользователь.
      */
     public Optional<User> findById(int id) {
-        Session session = sf.openSession();
-        session.beginTransaction();
-        Query<User> query = session.createQuery(FIND_BY_ID);
-        Optional<User> result = query.setParameter("id", id).uniqueResultOptional();
-        session.getTransaction().commit();
-        session.close();
-        return result;
+        return crudRepository.optional(
+                FIND_BY_ID, User.class,
+                Map.of("id", id));
     }
 
     /**
@@ -126,13 +78,9 @@ public class UserRepository {
      * @return список пользователй.
      */
     public List<User> findByLikeLogin(String key) {
-        Session session = sf.openSession();
-        session.beginTransaction();
-        Query<User> query = session.createQuery(FIND_BY_LIKE_LOGIN);
-        List<User> result = query.setParameter("key", "%" + key + "%").list();
-        session.getTransaction().commit();
-        session.close();
-        return result;
+        return crudRepository.query(
+                FIND_BY_LIKE_LOGIN, User.class,
+                Map.of("key", "%" + key + "%"));
     }
 
     /**
@@ -141,12 +89,8 @@ public class UserRepository {
      * @return Optional или пользователь
      */
     public Optional<User> findByLogin(String login) {
-        Session session = sf.openSession();
-        session.beginTransaction();
-        Query<User> query = session.createQuery(FIND_BY_LOGIN);
-        Optional<User> result = query.setParameter("login", login).uniqueResultOptional();
-        session.getTransaction().commit();
-        session.close();
-        return result;
+        return crudRepository.optional(
+                FIND_BY_LOGIN, User.class,
+                Map.of("key", login));
     }
 }
