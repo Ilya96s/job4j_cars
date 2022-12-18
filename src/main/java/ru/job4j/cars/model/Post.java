@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * Post - модель данных
@@ -40,4 +41,14 @@ public class Post {
     @ManyToOne()
     @JoinColumn(name = "auto_user_id")
     private User user;
+
+    /**
+     * список пользователей.
+     */
+    @ManyToMany
+    @JoinTable(
+            name = "participates",
+            joinColumns = { @JoinColumn(name = "post_id")},
+            inverseJoinColumns = { @JoinColumn(name = "user_id")})
+    private List<User> participates;
 }
