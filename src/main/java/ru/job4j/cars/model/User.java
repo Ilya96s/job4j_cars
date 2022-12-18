@@ -15,12 +15,21 @@ import javax.persistence.*;
 @Table(name = "Auto_user")
 public class User {
 
+    /**
+     * id пользователя.
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Include
     private int id;
 
+    /**
+     * логин пользователя.
+     */
     private String login;
 
+    /**
+     * пароль пользователя.
+     */
     private String password;
 }

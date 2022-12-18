@@ -1,4 +1,4 @@
-package ru.job4j.cars.model.repository;
+package ru.job4j.cars.repository;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.MetadataSources;
@@ -17,7 +17,8 @@ public class UserUsage {
                 .configure().build();
         try (SessionFactory sf = new MetadataSources(registry)
                 .buildMetadata().buildSessionFactory()) {
-            var userRepository = new UserRepository(sf);
+            var crud = new CrudRepository(sf);
+            var userRepository = new UserRepository(crud);
             var user = new User();
             user.setLogin("admin");
             user.setPassword("admin");
