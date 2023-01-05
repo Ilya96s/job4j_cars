@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 /**
- * Post - модель данных
+ * Post - модель данных, описывающая пост
  *
  * @author Ilya Kaltygin
  */
@@ -38,17 +38,24 @@ public class Post {
     /**
      * автор поста.
      */
-    @ManyToOne()
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "auto_user_id")
     private User user;
 
     /**
      * список пользователей.
      */
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "participates",
             joinColumns = { @JoinColumn(name = "post_id")},
             inverseJoinColumns = { @JoinColumn(name = "user_id")})
     private List<User> participates;
+
+    /**
+     * идентификатор автомобиля.
+     */
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "car_id", referencedColumnName = "id")
+    private Car carId;
 }

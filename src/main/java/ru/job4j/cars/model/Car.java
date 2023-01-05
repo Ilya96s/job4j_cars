@@ -1,0 +1,51 @@
+package ru.job4j.cars.model;
+
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
+
+/**
+ * Car - модель данных, описывающая автомобиль
+ *
+ * @author Ilya Kaltygin
+ */
+
+@Data
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@Entity
+@Table(name = "car")
+public class Car {
+
+    /**
+     * id.
+     */
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @EqualsAndHashCode.Include
+    private int id;
+
+    /**
+     * название машины.
+     */
+    private String name;
+
+    /**
+     * идентификатор двигателя.
+     */
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "engine_id", referencedColumnName = "id")
+    private Engine engineId;
+
+    /**
+     * водители.
+     */
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "history_owner",
+            joinColumns = { @JoinColumn(name = "car_id", nullable = false, updatable = false)},
+            inverseJoinColumns = { @JoinColumn(name = "driver_id", nullable = false, updatable = false)}
+    )
+    private Set<Driver> owners = new HashSet<>();
+}

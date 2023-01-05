@@ -5,18 +5,19 @@ import lombok.EqualsAndHashCode;
 import javax.persistence.*;
 
 /**
- * User - модель данных, описывающая пользователя
+ * Engine - модель данных, описывающая двигатель
  *
  * @author Ilya Kaltygin
  */
+
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
-@Table(name = "Auto_user")
-public class User {
+@Table(name = "engine")
+public class Engine {
 
     /**
-     * id пользователя.
+     * id.
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,12 +25,7 @@ public class User {
     private int id;
 
     /**
-     * логин пользователя.
+     * название двигателя.
      */
-    private String login;
-
-    /**
-     * пароль пользователя.
-     */
-    private String password;
+    private String name;
 }

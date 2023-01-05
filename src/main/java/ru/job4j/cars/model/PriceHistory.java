@@ -6,7 +6,7 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 /**
- * PriceHistory - модель данных
+ * PriceHistory - модель данных, описывающая историю цен
  *
  * @author Ilya Kaltygin
  */
