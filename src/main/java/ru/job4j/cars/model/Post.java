@@ -58,4 +58,9 @@ public class Post {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "car_id", referencedColumnName = "id")
     private Car carId;
+
+    /**
+     * фото
+     */
+    private byte[] photo;
 }

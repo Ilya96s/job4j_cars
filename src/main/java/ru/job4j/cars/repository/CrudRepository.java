@@ -37,7 +37,7 @@ public interface CrudRepository {
      * @return Optional<T>
      * @param <T> generic.
      */
-    <T> Optional<T> optional(String query, Class<T> cl, Map<String, Object> args);
+    <T> Optional<T> queryAndGetOptional(String query, Class<T> cl, Map<String, Object> args);
 
     /**
      /**
@@ -48,7 +48,7 @@ public interface CrudRepository {
      * @return List<T>
      * @param <T> generic.
      */
-    <T> List<T> query(String query, Class<T> cl);
+    <T> List<T> queryAndGetList(String query, Class<T> cl);
 
     /**
      * Метод принимает параметры и создает из них команду.
@@ -59,7 +59,7 @@ public interface CrudRepository {
      * @return List<T>
      * @param <T> generic.
      */
-    <T> List<T> query(String query, Class<T> cl, Map<String, Object> args);
+    <T> List<T> queryAndGetList(String query, Class<T> cl, Map<String, Object> args);
 
     /**
      * Главный метод в этом классе, выполняющий абстрактную операцию.

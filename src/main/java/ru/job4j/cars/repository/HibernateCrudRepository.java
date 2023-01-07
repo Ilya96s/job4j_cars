@@ -71,7 +71,7 @@ public class HibernateCrudRepository implements CrudRepository {
      * @param <T> generic.
      */
     @Override
-    public <T> Optional<T> optional(String query, Class<T> cl, Map<String, Object> args) {
+    public <T> Optional<T> queryAndGetOptional(String query, Class<T> cl, Map<String, Object> args) {
         Function<Session, Optional<T>> command = session -> {
             var sq = session.createQuery(query, cl);
             for (Map.Entry<String, Object> arg : args.entrySet()) {
@@ -92,7 +92,7 @@ public class HibernateCrudRepository implements CrudRepository {
      * @param <T> generic.
      */
     @Override
-    public <T> List<T> query(String query, Class<T> cl) {
+    public <T> List<T> queryAndGetList(String query, Class<T> cl) {
         Function<Session, List<T>> command = session -> session.createQuery(query, cl).list();
         return tx(command);
     }
@@ -107,7 +107,7 @@ public class HibernateCrudRepository implements CrudRepository {
      * @param <T> generic.
      */
     @Override
-    public <T> List<T> query(String query, Class<T> cl, Map<String, Object> args) {
+    public <T> List<T> queryAndGetList(String query, Class<T> cl, Map<String, Object> args) {
         Function<Session, List<T>> command = session -> {
             var sq = session.createQuery(query, cl);
             for (Map.Entry<String, Object> arg : args.entrySet()) {

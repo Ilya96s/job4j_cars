@@ -67,7 +67,7 @@ public class HibernateUserRepository implements UserRepository {
      */
     @Override
     public List<User> findAllOrderById() {
-        return crudRepository.query(FIND_ALL_ORDER_BY, User.class);
+        return crudRepository.queryAndGetList(FIND_ALL_ORDER_BY, User.class);
     }
 
     /**
@@ -77,7 +77,7 @@ public class HibernateUserRepository implements UserRepository {
      */
     @Override
     public Optional<User> findById(int id) {
-        return crudRepository.optional(
+        return crudRepository.queryAndGetOptional(
                 FIND_BY_ID, User.class,
                 Map.of("id", id));
     }
@@ -89,7 +89,7 @@ public class HibernateUserRepository implements UserRepository {
      */
     @Override
     public List<User> findByLikeLogin(String key) {
-        return crudRepository.query(
+        return crudRepository.queryAndGetList(
                 FIND_BY_LIKE_LOGIN, User.class,
                 Map.of("key", "%" + key + "%"));
     }
@@ -101,7 +101,7 @@ public class HibernateUserRepository implements UserRepository {
      */
     @Override
     public Optional<User> findByLogin(String login) {
-        return crudRepository.optional(
+        return crudRepository.queryAndGetOptional(
                 FIND_BY_LOGIN, User.class,
                 Map.of("key", login));
     }
