@@ -3,6 +3,7 @@ package ru.job4j.cars.repository;
 import ru.job4j.cars.model.Post;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * PostRepository - хранилище объявлений
@@ -11,6 +12,13 @@ import java.util.List;
  */
 
 public interface PostRepository {
+
+    /**
+     * Сохранить объявление в базе данных.
+     * @param post объявление.
+     * @return Optional.of(post) если успешно, иначе Optional.empty().
+     */
+    Optional<Post> addPost(Post post);
 
     /**
      * Получить объявления за последний день.

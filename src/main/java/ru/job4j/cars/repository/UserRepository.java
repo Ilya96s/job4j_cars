@@ -13,11 +13,11 @@ import java.util.Optional;
 public interface UserRepository {
 
     /**
-     * Сохранить в базе.
+     * Сохранить пользователя в базе данных.
      * @param user пользователь.
      * @return пользователь с id.
      */
-    User create(User user);
+    Optional<User> addUser(User user);
 
     /**
      * обновить в базе пользователя.

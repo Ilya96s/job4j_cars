@@ -33,14 +33,14 @@ public class HibernateUserRepository implements UserRepository {
     private final CrudRepository crudRepository;
 
     /**
-     * Сохранить в базе.
+     * Сохранить пользователя в базе данных.
      * @param user пользователь.
      * @return пользователь с id.
      */
     @Override
-    public User create(User user) {
-        crudRepository.run(session -> session.persist(user));
-        return user;
+    public Optional<User> addUser(User user) {
+        crudRepository.run(session -> session.save(user));
+        return Optional.of(user);
     }
 
     /**
@@ -103,6 +103,6 @@ public class HibernateUserRepository implements UserRepository {
     public Optional<User> findByLogin(String login) {
         return crudRepository.queryAndGetOptional(
                 FIND_BY_LOGIN, User.class,
-                Map.of("key", login));
+                Map.of("login", login));
     }
 }

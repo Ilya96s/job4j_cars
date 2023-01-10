@@ -7,6 +7,7 @@ import ru.job4j.cars.model.Post;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * HibernatePostRepository - реализация хранилища объявлений
@@ -37,6 +38,17 @@ public class HibernatePostRepository implements PostRepository {
      * Объект типа CrudRepository
      */
     private final CrudRepository crudRepository;
+
+    /**
+     * Сохранить объявление в базе данных.
+     * @param post объявление.
+     * @return Optional.of(post) если успешно, иначе Optional.empty().
+     */
+    @Override
+    public Optional<Post> addPost(Post post) {
+        crudRepository.run(session -> session.save(post));
+        return Optional.of(post);
+    }
 
     /**
      * Получить объявления за последний день.
